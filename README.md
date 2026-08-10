@@ -6,7 +6,7 @@
 
 ## 在线体验
 
-- GitHub Pages：发布后会使用 `https://citarreikee.github.io/macintosh-scroll-site/`
+- GitHub Pages：[https://citarreikee.github.io/macintosh-scroll-site/](https://citarreikee.github.io/macintosh-scroll-site/)
 - 本地预览：`python3 -m http.server 8000`
 
 然后访问 `http://127.0.0.1:8000/`。
