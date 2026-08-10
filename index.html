@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Macintosh — Scroll into the screen</title>
+  <style>
+    * { box-sizing:border-box; }
+    html, body { margin:0; min-width:320px; overflow-x:hidden; background:#d8d5ce; }
+    .scroll-space { height:440vh; position:relative; }
+    .stage { position:fixed; inset:0; width:100vw; height:100vh; height:100dvh; overflow:hidden; background:#d8d5ce; }
+    #webgl { position:fixed; z-index:2; inset:0; width:100vw !important; height:100vh !important; height:100dvh !important; display:block; }
+    .classic-ui { position:fixed; z-index:1; inset:0; width:100vw; height:100vh; height:100dvh; opacity:0; pointer-events:none; overflow:hidden; color:#000; background:#d7d7d7; font-family:Chicago,"Courier New",monospace; image-rendering:pixelated; clip-path:inset(13% 17% 14% 17% round 2px); transform:scale(.98); transform-origin:50% 49%; }
+    .classic-ui::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.09; background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,transparent 1px,transparent 3px); }
+    .menu-bar { height:30px; display:flex; align-items:center; gap:24px; padding:0 18px; border-bottom:2px solid #000; background:#fff; font-size:14px; font-weight:bold; white-space:nowrap; }
+    .apple { font-family:Arial,sans-serif; font-size:20px; line-height:1; }
+    .desktop { position:relative; height:calc(100% - 30px); padding:38px 54px 52px; background-color:#c8c8c8; background-image:radial-gradient(#777 .65px,transparent .65px); background-size:3px 3px; }
+    .paint-window { position:relative; width:min(960px,82vw); height:min(650px,79vh); margin:0 auto; border:3px solid #000; background:#fff; box-shadow:9px 9px 0 #777; }
+    .window-title { height:29px; display:grid; grid-template-columns:30px 1fr 30px; align-items:center; border-bottom:3px solid #000; background:repeating-linear-gradient(0deg,#fff 0,#fff 2px,#000 2px,#000 3px); }
+    .close-box,.zoom-box { width:19px; height:19px; margin:auto; border:2px solid #000; background:#fff; }
+    .window-title strong { justify-self:center; padding:2px 16px; background:#fff; font-size:13px; }
+    .paint-body { display:grid; grid-template-columns:94px 1fr; height:calc(100% - 29px); }
+    .tools { display:grid; grid-template-columns:1fr 1fr; align-content:start; gap:2px; padding:8px; border-right:3px solid #000; background:#eee; }
+    .tool { aspect-ratio:1; display:grid; place-items:center; border:1px solid #777; background:#fff; font:20px Georgia,serif; }
+    .tool.active { color:#fff; background:#000; }
+    .stroke-box { grid-column:1/-1; margin-top:8px; padding:7px; border:2px solid #000; background:#fff; }
+    .stroke { display:block; height:3px; margin:6px 0; background:#000; }
+    .stroke:nth-child(2){height:6px}.stroke:nth-child(3){height:9px}
+    .art-area { position:relative; min-width:0; overflow:hidden; background:#fff; }
+    .artwork { display:block; width:100%; height:calc(100% - 72px); background:#fff; }
+    .palette { position:absolute; left:0; right:0; bottom:0; height:72px; display:grid; grid-template-columns:repeat(12,1fr); gap:2px; padding:6px; border-top:3px solid #000; background:#ddd; }
+    .swatch { border:2px solid #000; background:#fff; }
+    .swatch:nth-child(2n){background:repeating-linear-gradient(45deg,#000 0,#000 2px,#fff 2px,#fff 5px)}
+    .swatch:nth-child(3n){background:radial-gradient(#000 1px,#fff 1px);background-size:5px 5px}
+    .swatch:nth-child(5n){background:#000}
+    .classic-note { position:absolute; right:22px; bottom:14px; padding:5px 8px; border:2px solid #000; background:#fff; font-size:11px; }
+    @media (max-width:700px) { .menu-bar{gap:12px;padding:0 10px;font-size:11px}.desktop{padding:22px 12px}.paint-window{width:94vw;height:78vh}.paint-body{grid-template-columns:66px 1fr}.tool{font-size:15px}.palette{height:54px}.artwork{height:calc(100% - 54px)} }
+  </style>
+</head>
+<body>
+  <main class="scroll-space" id="scrollSpace">
+    <section class="stage" id="stage">
+      <canvas id="webgl" aria-label="正在旋转的 Macintosh 3D 模型"></canvas>
+      <section class="classic-ui" id="classicUI" aria-label="Macintosh 风格的绘图页面">
+        <nav class="menu-bar"><span class="apple">◆</span><span>File</span><span>Edit</span><span>Goodies</span><span>Font</span><span>FontSize</span><span>Style</span></nav>
+        <div class="desktop">
+          <div class="paint-window">
+            <div class="window-title"><span class="close-box"></span><strong>untitled</strong><span class="zoom-box"></span></div>
+            <div class="paint-body">
+              <aside class="tools"><span class="tool">☝</span><span class="tool active">▦</span><span class="tool">A</span><span class="tool">✎</span><span class="tool">⌁</span><span class="tool">◩</span><span class="tool">□</span><span class="tool">●</span><span class="tool">◇</span><span class="tool">♥</span><div class="stroke-box"><i class="stroke"></i><i class="stroke"></i><i class="stroke"></i></div></aside>
+              <div class="art-area">
+                <svg class="artwork" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" aria-label="黑白像素绘画">
+                  <rect width="800" height="500" fill="white"/>
+                  <path d="M505 51c-84 4-147 46-170 116-18 53 2 109 39 133 21 14 38 18 55 15-12 38-6 79 19 112 62 28 140 20 197-21-11-22-15-46-11-72 8-48 46-71 76-103-25-5-45-20-59-43-31-51-73-93-146-137Z" fill="#000"/>
+                  <path d="M461 129c45-27 98-10 126 27 31 42 8 97-23 128-17 17-24 44-8 67-34 23-90 28-128 3 5-33 8-61-11-90-25-39-2-105 44-135Z" fill="#fff" stroke="#000" stroke-width="7"/>
+                  <path d="M460 196c18 3 27 19 29 38M551 192c13 2 24 13 26 27M496 273c18 12 40 10 55-5" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+                  <path d="M371 346c48-29 94-9 133 23 25 21 59 29 94 18 47-14 93-47 139-57-16 63-69 112-133 132-87 27-181 9-250-47Z" fill="#000"/>
+                  <path d="M397 365l28-12 18 22 23-17 20 26 24-15 22 26 25-14 21 25 27-10 17 24-36 16-37-9-31-26-35 16-27-30-30 13Z" fill="#fff"/>
+                  <path d="M602 336c33-34 69-61 110-81 15 12 18 29 5 45-31 37-71 62-115 80" fill="#fff" stroke="#000" stroke-width="8"/>
+                  <circle cx="720" cy="251" r="9" fill="#000"/><path d="M715 252c-8-36 7-65 36-86" fill="none" stroke="#000" stroke-width="6"/>
+                </svg>
+                <div class="palette"><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span></div>
+              </div>
+            </div>
+          </div>
+          <span class="classic-note">MacPaint · 1 bit</span>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.161.0/build/three.module.js"}}</script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'https://unpkg.com/three@0.161.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const canvas = document.querySelector('#webgl');
+    const classicUI = document.querySelector('#classicUI');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, .1, 100);
+    camera.position.set(0, 0, 8.8);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true, powerPreference:'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8)); renderer.setSize(innerWidth, innerHeight); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xc4b9a4, 2.1));
+    const key = new THREE.DirectionalLight(0xffffff, 3.5); key.position.set(-4, 6, 7); key.castShadow = true; scene.add(key);
+    const rim = new THREE.PointLight(0xfff4df, 22, 15); rim.position.set(4, 2, -3); scene.add(rim);
+
+    const hero = new THREE.Group(); hero.position.set(0,0,0); hero.scale.setScalar(.22); scene.add(hero);
+
+    // The supplied asset replaces the procedural placeholder as soon as it is ready.
+    // Source: /outputs/macintosh_classic_1991.glb (user-provided local asset).
+    const imported = new THREE.Group(); hero.add(imported);
+    new GLTFLoader().load('./macintosh_classic_1991.glb?v=20260810-3', (gltf) => {
+      const model = gltf.scene;
+      const bounds = new THREE.Box3().setFromObject(model);
+      const size = bounds.getSize(new THREE.Vector3());
+      const center = bounds.getCenter(new THREE.Vector3());
+      model.position.sub(center);
+      const fit = 3.95 / Math.max(size.x, size.y, size.z);
+      model.scale.setScalar(fit);
+      model.traverse((node) => { if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; } });
+      imported.add(model);
+      console.info('macintosh-model-loaded', { nodes: model.children.length, size: size.toArray(), fit, names: model.getObjectByProperty ? (() => { const all=[]; model.traverse(n=>all.push(n.name)); return all.filter(Boolean).slice(0,80); })() : [] });
+    }, undefined, (error) => console.warn('macintosh-model-failed', error));
+
+    function resize(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,1.8)); } addEventListener('resize',resize);
+    function lerp(a,b,t){return a+(b-a)*t;}
+    gsap.registerPlugin(ScrollTrigger);
+    const timeline = gsap.timeline({
+      defaults:{ overwrite:'auto' },
+      scrollTrigger:{ trigger:'#scrollSpace', start:'top top', end:'bottom bottom', scrub:1.05 },
+      onUpdate(){}
+    });
+    // One continuous move: the turn, push-in and scale overlap. At 78% the
+    // rotation lands on exactly 2π, so the physical display faces the viewer.
+    timeline
+      .to(hero.rotation,{ y:Math.PI*2, x:0, z:0, duration:.78, ease:'power1.inOut' },0)
+      .to(hero.scale,{ x:.42, y:.42, z:.42, duration:.62, ease:'sine.inOut' },0)
+      .to(hero.position,{ z:.12, y:0, duration:.62, ease:'sine.inOut' },0)
+      .to(hero.scale,{ x:3.18, y:3.18, z:3.18, duration:.27, ease:'power2.in' },.62)
+      .to(hero.position,{ z:.58, y:-1.02, x:0, duration:.27, ease:'power2.in' },.62)
+      .to(classicUI,{ opacity:1, clipPath:'inset(0% 0% 0% 0% round 0px)', scale:1, duration:.18, ease:'sine.inOut', pointerEvents:'auto' },.82)
+      .to(canvas,{ opacity:0, duration:.18, ease:'sine.inOut' },.82);
+    function render(){ requestAnimationFrame(render); renderer.render(scene,camera); } render();
+  </script>
+</body>
+</html>
