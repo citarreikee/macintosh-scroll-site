@@ -2,6 +2,10 @@
 
 一个以真实 Macintosh Classic 1991 `.glb` 模型为核心的创意前端实验：模型从屏幕中央的小尺寸开始，随着页面滚动连续旋转、放大，最后将视角推进到显示器屏幕，并交叉淡化接管为一套可由 HTML/CSS/SVG 构建的 1-bit MacPaint 风格页面。
 
+![Scroll preview](docs/scroll-preview.gif)
+
+静态截图：
+
 ![Macintosh Scroll Into the Screen](docs/screenshot.png)
 
 ## 在线体验
@@ -45,7 +49,8 @@ macintosh-scroll-site/
 ├── macintosh_classic_1991.glb  # Macintosh Classic 1991 3D 模型
 ├── prompt.md                   # 从只有 GLB 文件开始复刻本项目的 Codex 提示词
 └── docs/
-    └── screenshot.png          # 项目效果截图
+    ├── scroll-preview.gif       # 从模型到最终页面的滚动动画预览
+    └── screenshot.png           # 最终 MacPaint 页面截图
 ```
 
 ## 技术说明
