@@ -8,6 +8,15 @@
 
 ![Macintosh Scroll Into the Screen](docs/screenshot.png)
 
+## 两种实现路线
+
+同类滚动视觉既可以用真实 3D 场景实时渲染，也可以把预渲染视频的播放时间绑定到滚动进度。下面的 Excalidraw 图概括了两种方案的流程、优缺点和适用场景。
+
+![真实 3D 与视频关键帧方案对比](docs/implementation-comparison.svg)
+
+- [视频关键帧方案生成提示词](video-prompt.md)
+- [可编辑的 Excalidraw 源文件](docs/implementation-comparison.excalidraw)
+
 ## 在线体验
 
 - GitHub Pages：[https://citarreikee.github.io/macintosh-scroll-site/](https://citarreikee.github.io/macintosh-scroll-site/)
@@ -48,9 +57,12 @@ macintosh-scroll-site/
 ├── index.html                  # Three.js 场景、滚动时间轴和 MacPaint UI
 ├── macintosh_classic_1991.glb  # Macintosh Classic 1991 3D 模型
 ├── prompt.md                   # 从只有 GLB 文件开始复刻本项目的 Codex 提示词
+├── video-prompt.md             # 使用生成视频复刻滚动效果的提示词与参数
 └── docs/
-    ├── scroll-preview.gif       # 从模型到最终页面的滚动动画预览
-    └── screenshot.png           # 最终 MacPaint 页面截图
+    ├── implementation-comparison.excalidraw # 方案对比图的可编辑源文件
+    ├── implementation-comparison.svg        # 方案对比图预览
+    ├── scroll-preview.gif                   # 从模型到最终页面的滚动动画预览
+    └── screenshot.png                       # 最终 MacPaint 页面截图
 ```
 
 ## 技术说明

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">滚动驱动视觉的两种实现方式</title>
+  <desc id="desc">对比真实模型加三维场景与视频加关键帧滚动的流程、优点、缺点和适用场景。</desc>
+  <rect width="1200" height="900" fill="#fff"/>
+  <g fill="none" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="455" y="75" width="290" height="60" rx="8"/>
+    <path d="M520 135 L290 200 M680 135 L910 200"/>
+    <path d="M298 193 L290 200 L302 202 M902 193 L910 200 L898 202"/>
+    <rect x="35" y="185" width="530" height="500" rx="10" stroke-dasharray="8 8"/>
+    <rect x="635" y="185" width="530" height="500" rx="10" stroke-dasharray="8 8"/>
+    <rect x="70" y="280" width="135" height="68" rx="7"/>
+    <rect x="247" y="280" width="135" height="68" rx="7"/>
+    <rect x="424" y="280" width="105" height="68" rx="7"/>
+    <path d="M205 314 H247 M382 314 H424"/>
+    <path d="M239 308 L247 314 L239 320 M416 308 L424 314 L416 320"/>
+    <path d="M295 380 V635" stroke-dasharray="6 7"/>
+    <rect x="670" y="280" width="135" height="68" rx="7"/>
+    <rect x="847" y="280" width="135" height="68" rx="7"/>
+    <rect x="1024" y="280" width="105" height="68" rx="7"/>
+    <path d="M805 314 H847 M982 314 H1024"/>
+    <path d="M839 308 L847 314 L839 320 M1016 308 L1024 314 L1016 320"/>
+    <path d="M895 380 V635" stroke-dasharray="6 7"/>
+    <rect x="90" y="760" width="430" height="72" rx="8"/>
+    <rect x="680" y="760" width="430" height="72" rx="8"/>
+  </g>
+  <g fill="#1e1e1e" font-family="Virgil, 'Comic Sans MS', 'KaiTi', cursive" text-anchor="middle">
+    <text x="600" y="42" font-size="30">滚动驱动视觉：两种实现方式</text>
+    <text x="600" y="112" font-size="21">页面滚动进度 0 → 1</text>
+    <text x="300" y="230" font-size="24">方式 A：真实模型 + 3D 场景</text>
+    <text x="900" y="230" font-size="24">方式 B：视频 + 关键帧滚动</text>
+    <text x="137" y="320" font-size="18">滚动进度</text>
+    <text x="314" y="307" font-size="17"><tspan x="314">控制相机</tspan><tspan x="314" dy="21">模型与灯光</tspan></text>
+    <text x="476" y="307" font-size="17"><tspan x="476">GPU</tspan><tspan x="476" dy="21">实时渲染</tspan></text>
+    <text x="737" y="320" font-size="18">滚动进度</text>
+    <text x="914" y="307" font-size="17"><tspan x="914">映射到</tspan><tspan x="914" dy="21">视频时间</tspan></text>
+    <text x="1076" y="307" font-size="17"><tspan x="1076">解码</tspan><tspan x="1076" dy="21">既定画面</tspan></text>
+  </g>
+  <g fill="#1e1e1e" font-family="Virgil, 'Comic Sans MS', 'KaiTi', cursive" font-size="18">
+    <text x="75" y="405" font-size="21">优点</text>
+    <text x="75" y="446"><tspan x="75">• 视角、材质和光照可调</tspan><tspan x="75" dy="35">• 支持鼠标、触控交互</tspan><tspan x="75" dy="35">• 放大后依然清晰</tspan><tspan x="75" dy="35">• 后续修改空间大</tspan></text>
+    <text x="330" y="405" font-size="21">缺点</text>
+    <text x="330" y="446"><tspan x="330">• 模型整理和调光成本高</tspan><tspan x="330" dy="35">• 依赖设备 GPU 性能</tspan><tspan x="330" dy="35">• 浏览器兼容更难处理</tspan><tspan x="330" dy="35">• 运行功耗相对更高</tspan></text>
+    <text x="675" y="405" font-size="21">优点</text>
+    <text x="675" y="446"><tspan x="675">• 画面结果稳定可控</tspan><tspan x="675" dy="35">• 可预先制作复杂特效</tspan><tspan x="675" dy="35">• 前端实现相对简单</tspan><tspan x="675" dy="35">• 各设备表现更一致</tspan></text>
+    <text x="930" y="405" font-size="21">缺点</text>
+    <text x="930" y="446"><tspan x="930">• 视角固定，无法真 3D 交互</tspan><tspan x="930" dy="35">• 高清视频文件较大</tspan><tspan x="930" dy="35">• 频繁跳帧可能卡顿</tspan><tspan x="930" dy="35">• 修改画面通常要重渲染</tspan></text>
+  </g>
+  <g fill="#1e1e1e" font-family="Virgil, 'Comic Sans MS', 'KaiTi', cursive" text-anchor="middle">
+    <text x="600" y="720" font-size="24">怎么选？</text>
+    <text x="305" y="803" font-size="20">探索、交互、可变视角 → 真实 3D</text>
+    <text x="895" y="803" font-size="20">稳定叙事、固定镜头、极致画质 → 视频</text>
+    <text x="600" y="872" font-size="18">折中方案：预渲染视觉主体，最后切换为真实 HTML 页面</text>
+  </g>
+</svg>
